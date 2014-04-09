@@ -217,7 +217,7 @@ RUBY
         end
 
         if options[:sanitize_javascript]
-          text.gsub!(/<(\/)?script>/i, '')
+          text = text.gsub(/[<>]/, '<' => '&lt;', '>' => '&gt;')
         end
 
         str = "<script#{type}>\n"
