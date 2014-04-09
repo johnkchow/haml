@@ -216,6 +216,10 @@ RUBY
           type = " type=#{options[:attr_wrapper]}text/javascript#{options[:attr_wrapper]}"
         end
 
+        if options[:sanitize_javascript]
+          text.gsub!(/<(\/)?script>/i, '')
+        end
+
         str = "<script#{type}>\n"
         str << "  //<![CDATA[\n" if options[:cdata]
         str << "#{indent}#{text.rstrip.gsub("\n", "\n#{indent}")}\n"
