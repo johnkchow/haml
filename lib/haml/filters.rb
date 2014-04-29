@@ -163,7 +163,7 @@ module Haml
           if contains_interpolation?(text)
             return if options[:suppress_eval]
 
-            text = unescape_interpolation(text).gsub(/(\\+)n/) do |s|
+            text = unescape_interpolation(text, options[:escape_html], filter.escape_method).gsub(/(\\+)n/) do |s|
               escapes = $1.size
               next s if escapes % 2 == 0
               ("\\" * (escapes - 1)) + "\n"
@@ -189,6 +189,10 @@ RUBY
             push_text(rendered.rstrip.gsub("\n", "\n#{'  ' * @output_tabs}"))
           end
         end
+      end
+
+      def escape_method
+        "html_escape"
       end
     end
 
@@ -223,6 +227,10 @@ RUBY
         str << "</script>"
 
         str
+      end
+
+      def escape_method
+        "html_escape_javascript"
       end
     end
 

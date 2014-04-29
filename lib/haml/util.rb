@@ -325,7 +325,7 @@ METHOD
       str.include?('#{')
     end
 
-    def unescape_interpolation(str, escape_html = nil)
+    def unescape_interpolation(str, escape_html = nil, escape_method = 'html_escape')
       res = ''
       rest = Haml::Util.handle_interpolation str.dump do |scan|
         escapes = (scan[2].size - 1) / 2
@@ -334,7 +334,7 @@ METHOD
           res << '#{'
         else
           content = eval('"' + balance(scan, ?{, ?}, 1)[0][0...-1] + '"')
-          content = "Haml::Helpers.html_escape((#{content}))" if escape_html
+          content = "Haml::Helpers.#{escape_method}((#{content}))" if escape_html
           res << '#{' + content + "}"# Use eval to get rid of string escapes
         end
       end

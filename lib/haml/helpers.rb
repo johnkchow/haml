@@ -538,12 +538,21 @@ MESSAGE
         text = text.to_s
         text.gsub(HTML_ESCAPE_REGEX, HTML_ESCAPE)
       end
+
+      def html_escape_javascript(text)
+        text.to_s.gsub(/[<>]/, '<' => '&lt;', '>' => '&gt;')
+      end
     else
       def html_escape(text)
         text = text.to_s
         text.gsub(HTML_ESCAPE_REGEX) {|s| HTML_ESCAPE[s]}
       end
+
+      def html_escape_javascript(text)
+        text.to_s.gsub(/[<>]/) {|s| {'<' => '&lt;', '>' => '&gt;'}[s]}
+      end
     end
+
 
     HTML_ESCAPE_ONCE_REGEX = /[\"><]|&(?!(?:[a-zA-Z]+|(#\d+));)/
 
